@@ -7,6 +7,7 @@ const Layout = ({ children }) => {
     return (
         <div className="Layout">
             <Head>
+                <meta http-equiv="Cache-control" content="public" />
                 <link rel="icon" href="/socet.ico" />
                 {/* Bootstrap5 CDNs */}
                 <link

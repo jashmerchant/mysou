@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import styles from '../styles/Grades.module.css';
+import styles from '../../../styles/Grades.module.css';
 import { Bar } from 'react-chartjs-2';
 
 const SPI = {
