@@ -1,6 +1,6 @@
 import Layout from '../components/Layout'
 import '../styles/globals.css'
-import getConfig from 'next/config'
+// import getConfig from 'next/config'
 import Router from 'next/router'
 import { parseCookies } from 'nookies'
 
@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps, router }) {
 	)
 }
 
-const { publicRuntimeConfig } = getConfig()
+// const { publicRuntimeConfig } = getConfig()
 
 function redirectUser(ctx, location) {
 	if (ctx.req) {

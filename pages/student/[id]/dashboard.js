@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { Doughnut } from 'react-chartjs-2';
-import getConfig from 'next/config';
+// import getConfig from 'next/config';
+import { API_URL } from '../../../utils/urls';
 import { parseCookies } from 'nookies';
 
 export default function Dashboard({ studentProfiles, attendances, small_notifications, big_notifications }) {
+    console.log(studentProfiles);
     return (
         <>
             <Head>
@@ -134,7 +136,7 @@ export default function Dashboard({ studentProfiles, attendances, small_notifica
     )
 }
 
-const { publicRuntimeConfig } = getConfig()
+// const { publicRuntimeConfig } = getConfig()
 
 export async function getServerSideProps(context) {
 
@@ -142,7 +144,7 @@ export async function getServerSideProps(context) {
     const { id } = context.query
 
     // Fetch Student_Profile
-    const res = await fetch(`${publicRuntimeConfig.API_URL}/student-profiles/${id}`, {
+    const res = await fetch(`${API_URL}/student-profiles/${id}`, {
         headers: {
             Authorization: `Bearer ${jwt}`
         }
@@ -150,7 +152,7 @@ export async function getServerSideProps(context) {
     const studentProfiles = await res.json()
 
     // Fetch Attendance
-    const res_a = await fetch(`${publicRuntimeConfig.API_URL}/attendances/${id}`, {
+    const res_a = await fetch(`${API_URL}/attendances/${id}`, {
         headers: {
             Authorization: `Bearer ${jwt}`
         }
@@ -158,7 +160,7 @@ export async function getServerSideProps(context) {
     const attendances = await res_a.json()
 
     // Fetch Small_Notifications
-    const res_s_n = await fetch(`${publicRuntimeConfig.API_URL}/small-notifications`, {
+    const res_s_n = await fetch(`${API_URL}/small-notifications`, {
         headers: {
             Authorization: `Bearer ${jwt}`
         }
@@ -166,7 +168,7 @@ export async function getServerSideProps(context) {
     const small_notifications = await res_s_n.json()
 
     // Fetch Big_Notifications
-    const res_b_n = await fetch(`${publicRuntimeConfig.API_URL}/big-notifications`, {
+    const res_b_n = await fetch(`${API_URL}/big-notifications`, {
         headers: {
             Authorization: `Bearer ${jwt}`
         }
