@@ -3,25 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import getConfig from 'next/config';
 import { parseCookies } from 'nookies';
 
-const data = {
-    labels: [
-        'Present %',
-        'Absent %'
-    ],
-    datasets: [{
-        data: [77, 23],
-        backgroundColor: [
-            '#FF6384',
-            '#FFCE56'
-        ],
-        hoverBackgroundColor: [
-            '#FF6384',
-            '#FFCE56'
-        ]
-    }]
-};
-
-export default function Dashboard({ studentProfiles }) {
+export default function Dashboard({ studentProfiles, attendances, small_notifications, big_notifications }) {
     return (
         <>
             <Head>
@@ -94,31 +76,20 @@ export default function Dashboard({ studentProfiles }) {
                                     </div>
                                 </div>
                                 <div class="col-7">
-                                    <div class="alert alert-danger" role="alert">
-                                        <strong>Everybody!</strong> fill in this <a href="#" class="alert-link">Google Form</a> to enroll for Crash Course.
-										</div>
-                                    <div class="alert alert-success" role="alert">
-                                        <h4 class="alert-heading">Well done!</h4>
-                                        <p>Aww yeah, you successfully read this important alert message. This example text is
-                                        going to run a bit longer so that you can see how spacing within an alert works with
-                        					this kind of content.</p>
-                                        <hr />
-                                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things
-                        					nice and tidy.</p>
-                                    </div>
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-                    							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    <div class="alert alert-info" role="alert">
-                                        <h4 class="alert-heading">Lorem Ipsum</h4>
-                                        <p>Aww yeah, you successfully read this important alert message. This example text is
-                                        going to run a bit longer so that you can see how spacing within an alert works with
-                        						this kind of content.</p>
-                                        <hr />
-                                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things
-                        						nice and tidy.</p>
-                                    </div>
+                                    {big_notifications.map(bn => (
+                                        <div class={`alert alert-${bn.Type}`} role="alert">
+                                            <h4 class="alert-heading">{bn.Title}</h4>
+                                            <p>{bn.Body}</p>
+                                            <hr />
+                                            <p class="mb-0">{bn.Footer}</p>
+                                        </div>
+                                    ))}
+                                    {small_notifications.map(sm => (
+                                        <div class={`alert alert-${sm.Type} alert-dismissible fade show`} role="alert">
+                                            {sm.Body}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -127,7 +98,23 @@ export default function Dashboard({ studentProfiles }) {
                                         <h4 class="text-center card-title mt-1">Attendance</h4>
                                         <div class="card-body">
                                             <Doughnut
-                                                data={data}
+                                                data={{
+                                                    labels: [
+                                                        'Present %',
+                                                        'Absent %'
+                                                    ],
+                                                    datasets: [{
+                                                        data: [attendances.Present_Percent, attendances.Absent_Percent],
+                                                        backgroundColor: [
+                                                            '#FF6384',
+                                                            '#FFCE56'
+                                                        ],
+                                                        hoverBackgroundColor: [
+                                                            '#FF6384',
+                                                            '#FFCE56'
+                                                        ]
+                                                    }]
+                                                }}
                                                 width={220}
                                                 height={220}
                                                 options={{
@@ -154,6 +141,7 @@ export async function getServerSideProps(context) {
     const jwt = parseCookies(context).jwt
     const { id } = context.query
 
+    // Fetch Student_Profile
     const res = await fetch(`${publicRuntimeConfig.API_URL}/student-profiles/${id}`, {
         headers: {
             Authorization: `Bearer ${jwt}`
@@ -161,9 +149,36 @@ export async function getServerSideProps(context) {
     })
     const studentProfiles = await res.json()
 
+    // Fetch Attendance
+    const res_a = await fetch(`${publicRuntimeConfig.API_URL}/attendances/${id}`, {
+        headers: {
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    const attendances = await res_a.json()
+
+    // Fetch Small_Notifications
+    const res_s_n = await fetch(`${publicRuntimeConfig.API_URL}/small-notifications`, {
+        headers: {
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    const small_notifications = await res_s_n.json()
+
+    // Fetch Big_Notifications
+    const res_b_n = await fetch(`${publicRuntimeConfig.API_URL}/big-notifications`, {
+        headers: {
+            Authorization: `Bearer ${jwt}`
+        }
+    })
+    const big_notifications = await res_b_n.json()
+
     return {
         props: {
             studentProfiles: studentProfiles,
+            attendances: attendances,
+            small_notifications: small_notifications,
+            big_notifications: big_notifications,
         }
     }
 }
