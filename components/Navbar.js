@@ -1,13 +1,22 @@
 import { FiLogOut } from 'react-icons/fi';
-import { destroyCookie } from 'nookies';
+import { setCookie } from 'nookies';
 import Router from 'next/router';
 
-const Navbar = ({ ctx }) => {
+const Navbar = () => {
     function handleLogout() {
-        destroyCookie(ctx, 'id', 'secure')
-        destroyCookie(ctx, 'jwt', 'secure')
+        setCookie(null, 'jwt', '', {
+            maxAge: 1,
+            path: '/',
+        })
+        setCookie(null, 'id', '', {
+            maxAge: 1,
+            path: '/',
+        })
         console.log('deleting cookies!')
         Router.push('/login');
+    }
+    function handleHover(e) {
+        e.target.style.cursor = "pointer"
     }
     return (
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -18,7 +27,7 @@ const Navbar = ({ ctx }) => {
             {/* <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" /> */}
             <ul class="navbar-nav px-3">
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" onClick={() => handleLogout()}><FiLogOut /> Sign out</a>
+                    <a class="nav-link" onMouseEnter={(e) => handleHover(e)} onClick={() => handleLogout()}><FiLogOut /> Sign out</a>
                 </li>
             </ul>
         </header>

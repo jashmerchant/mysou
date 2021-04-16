@@ -42,6 +42,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
 			redirectUser(ctx, `/student/${id}/dashboard`)
 		}
 	}
+	// else if (jwt) {
+	// 	if (ctx.pathname !== `/student/${id}/[placeholder]`) {
+	// 		console.log("hehe")
+	// 		redirectUser(ctx, `/student/${id}/dashboard`)
+	// 	}
+	// }
 
 	return {}
 }

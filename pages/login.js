@@ -2,11 +2,13 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import { useState } from 'react';
 import { setCookie } from 'nookies';
+import { AiOutlineUser, AiOutlineNumber, AiOutlineLock } from 'react-icons/ai'
 import Router from 'next/router';
 
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [enrollment, setEnrollment] = useState('')
 
     async function handleLogin() {
         const loginInfo = {
@@ -29,8 +31,6 @@ const Login = () => {
         setCookie(null, 'jwt', loginResponse.jwt, {
             maxAge: 30 * 24 * 60,
             path: '/',
-            sameSite: 'None',
-            secure: true,
         })
 
         let id = loginResponse.user.id - 1;
@@ -38,8 +38,6 @@ const Login = () => {
         setCookie(null, 'id', id, {
             maxAge: 30 * 24 * 60,
             path: '/',
-            sameSite: 'None',
-            secure: true,
         })
         Router.push(`/student/${id}/dashboard`);
     }
@@ -57,12 +55,6 @@ const Login = () => {
                 {/* <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script> */}
             </Head>
 
-            {/* <form>
-                <input type="email" onChange={e => setUsername(e.target.value)} value={username} /><br />
-                <input type="password" onChange={e => setPassword(e.target.value)} value={password} /><br />
-                <button type="button" onClick={() => handleLogin()}>Login</button>
-            </form> */}
-
             <section class="hero is-light is-fullheight">
                 <div class="hero-body">
                     <div class="container">
@@ -75,21 +67,29 @@ const Login = () => {
                                         <div class="control has-icons-left">
                                             <input value={username} type="email" name="username" placeholder="Username" class="input" required
                                                 onChange={e => setUsername(e.target.value)} />
+                                            <span class="icon is-small is-left">
+                                                <AiOutlineUser />
+                                            </span>
                                         </div>
                                     </div>
-                                    {/* <div class="field">
+                                    <div class="field">
                                         <label for="" class="label">Enrollment Number</label>
                                         <div class="control has-icons-left">
-                                            <input name="enroll_no" type="text" placeholder="Enrollment Number" class="input"
-                                                autocomplete="off" />
+                                            <input value={enrollment} name="enroll_no" type="text" placeholder="Enrollment Number" class="input"
+                                                autocomplete="off" onChange={e => setEnrollment(e.target.value)} />
+                                            <span class="icon is-small is-left">
+                                                <AiOutlineNumber />
+                                            </span>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div class="field">
                                         <label for="" class="label">Password</label>
                                         <div class="control has-icons-left">
                                             <input value={password} name="password" type="password" placeholder="*********" class="input"
                                                 required onChange={e => setPassword(e.target.value)} />
-
+                                            <span class="icon is-small is-left">
+                                                <AiOutlineLock />
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="field">
