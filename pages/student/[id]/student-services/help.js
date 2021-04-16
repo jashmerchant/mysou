@@ -27,7 +27,7 @@ const Help = () => {
                                         aria-controls="collapseOne"
                                     >
                                         Change Profile Data?
-        </button>
+                                    </button>
                                 </h2>
                                 <div
                                     id="collapseOne"
@@ -40,7 +40,7 @@ const Help = () => {
                                         >Currently there is no access to students to update their profile
             other than thier password.</strong
                                         >
-          Try to contant <code> Student Portal </code> => B block ground floor
+          Try to contant <code> Student Portal </code> B block ground floor
           or your<code> class coordinator</code>.
         </div>
                                 </div>

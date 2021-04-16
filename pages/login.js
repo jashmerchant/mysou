@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import getConfig from 'next/config';
+// import getConfig from 'next/config';
+import { API_URL } from '../utils/urls'
 import { useState } from 'react';
 import { setCookie } from 'nookies';
 import { AiOutlineUser, AiOutlineNumber, AiOutlineLock } from 'react-icons/ai'
@@ -16,7 +17,7 @@ const Login = () => {
             password: password
         }
 
-        const login = await fetch(`${publicRuntimeConfig.API_URL}/auth/local`, {
+        const login = await fetch(`${API_URL}/auth/local`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -108,6 +109,6 @@ const Login = () => {
     )
 }
 
-const { publicRuntimeConfig } = getConfig()
+// const { publicRuntimeConfig } = getConfig()
 
 export default Login
